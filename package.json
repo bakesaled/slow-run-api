@@ -2,17 +2,24 @@
   "name": "slow-run",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "build": "ng build",
+    "typegen": "dotenv -- cross-var npx @databases/pg-schema-cli --database %DB_CONNECTION_STRING% --directory src/__generated__",
+    "start": "tsc-watch --onSuccess \"node -r dotenv/config ./dist/index.js\"",
+    "migrate": "dotenv -- cross-var pg-migrations apply --directory ./src/sql-migrations --database %DB_CONNECTION_STRING%",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
   "dependencies": {
+    "@databases/pg-schema-cli": "^4.1.0",
+    "@databases/pg-test": "^3.0.1",
+    "cross-var": "^1.1.0",
+    "dotenv": "^10.0.0",
+    "dotenv-cli": "^4.0.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "@databases/pg-migrations": "^5.0.0",
+    "@databases/pg-typed": "^3.1.0",
     "@types/express": "^4.17.12",
     "@types/node": "^15.12.2",
     "prettier": "^2.3.1",
